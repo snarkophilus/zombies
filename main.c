@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/games/zombies/main.c,v 1.3 1999/06/22 13:22:44 simonb Exp $ */
+/* $Header: /cvsroot/games/zombies/main.c,v 1.4 1999/06/22 13:32:51 simonb Exp $ */
 
 /*-
  * Copyright (c) 1994, 1995, 1999
@@ -28,6 +28,7 @@
 
 #include <curses.h>
 #include <signal.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -44,7 +45,7 @@ int	Level;			/* current level */
 int	Dead;			/* am I dead? */
 int	Score;			/* current score */
 int	WallsLeft;		/* number of walls left on this level */
-int	Pause = 0;		/* pause between levels, instead of waiting
+int	Pause = FALSE;		/* pause between levels, instead of waiting
 				   for a keypress */
 int	MyUid;			/* the user id of the player for scoring */
 
@@ -54,23 +55,27 @@ char	Field[Y_FIELDSIZE][X_FIELDSIZE];
 int
 main(int argc, char **argv)
 {
-	int	show_only;
+	int	c, ShowOnly;
 
 	MyUid = getuid();
-	show_only = FALSE;
-	if (argc > 1) {
-		/* any more options and I'll switch to getopt() */
-		if (argc > 2)
+	ShowOnly = FALSE;
+	while ((c = getopt(argc, argv, "ps")) != EOF)
+		switch (c) {
+		  case 'p':
+			Pause = TRUE;
+			break;
+		  case 's':
+			ShowOnly = TRUE;
+			break;
+		  case '?':
 			usage();
-		else if (strcmp(argv[1], "-s") == 0)
-			show_only = TRUE;
-		else if (strcmp(argv[1], "-p") == 0)
-			Pause = 1;
-		else
-			usage();
-	}
+			/* NOTREACHED */
+		}
+	if (optind < argc)
+		usage();
+		/* NOTREACHED */
 
-	if (show_only) {
+	if (ShowOnly) {
 		show_score();
 		exit(0);
 		/* NOTREACHED */
