@@ -1,17 +1,20 @@
-/* $Header$ */
+/* $Header: /cvsroot/games/zombies/score.c,v 1.2 1999/06/22 13:15:02 simonb Exp $ */
 
 /*
  * score.c
  */
 
-#include "zombies.h"
-
-#include <sys/types.h>
+#include <curses.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <pwd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/param.h>
+
+#include "zombies.h"
+
 
 typedef struct {
 	int	s_uid;
@@ -26,17 +29,20 @@ typedef struct {
 int		StartTime, EndTime;
 static SCORE	scores[MAX_SCORES];
 
+static void set_name(SCORE *s);
 
 /*
  * score:
  *	Post the player's score, if reasonable, and then print out the
  *	top list.
  */
-score()
+
+void
+score(void)
 {
 	SCORE	*s;
 	char	lockfile[BUFSIZ];
-	int	done_show, my_score, i, lfd;
+	int	done_show, i, lfd;
 	int	newscore, top, bottom, topline;
 
 	strcpy(lockfile, SCORE_FILE);
@@ -54,7 +60,7 @@ score()
 	 * return, otherwise write out the revised score file.
 	 */
 	read_scores();
-	newscore = add_score(Score);
+	newscore = add_score();
 	if (!newscore) {
 		unlink(lockfile);
 		return;
@@ -89,7 +95,8 @@ score()
 }
 
 
-add_score()
+int
+add_score(void)
 {
 	int	i, newscore, uidcount;
 	SCORE	*s, ns, os, temp;
@@ -152,18 +159,19 @@ add_score()
 }
 
 
-set_name(s)
-SCORE	*s;
+static void
+set_name(SCORE *s)
 {
 	struct passwd	*pp;
-	char	*p;
+	char	*p, buf[MAXHOSTNAMELEN];
 
 	if ((pp = getpwuid(s->s_uid)) == NULL)
 		pp->pw_name = "???";
 	strncpy(s->s_name, pp->pw_name, MAXNAME);
-	gethostname(s->s_host, MAXNAME);
-	if (p = strchr(s->s_host, '.'))
-		p = '\0';
+	gethostname(buf, MAXHOSTNAMELEN);
+	if ((p = strchr(buf, '.')) != NULL)
+		*p = '\0';
+	strncpy(s->s_host, buf, MAXNAME);
 }
 
 
@@ -173,7 +181,9 @@ SCORE	*s;
  *
  * also used to return top score for init_field();
  */
-show_score()
+
+void
+show_score(void)
 {
 	SCORE	*s;
 	int	i, inf;
@@ -190,7 +200,7 @@ show_score()
 		if (s->s_score > 0) {
 			printf("\t%3d\t%5d\t%4d\t%-15s\t%.*s\n",
 				inf++, s->s_score, s->s_level, s->s_host,
-				sizeof(s->s_name), s->s_name);
+				(int)sizeof(s->s_name), s->s_name);
 		}
 	printf("\n");
 }
@@ -202,7 +212,8 @@ show_score()
  *
  */
 
-read_scores()
+void
+read_scores(void)
 {
 	FILE	*sf;
 	int	i;
@@ -238,7 +249,8 @@ read_scores()
  *
  */
 
-write_scores()
+void
+write_scores(void)
 {
 	FILE	*sf;
 	int	i;
@@ -264,7 +276,8 @@ write_scores()
  *
  */
 
-top_score()
+int
+top_score(void)
 {
 	FILE	*sf;
 	int	s;
@@ -279,13 +292,15 @@ top_score()
 	return(s);
 }
 
+
 /*
  * give_bonus:
  *	Give a bonus depending on the number of walls left on the screen.
  *
  */
 
-give_bonus()
+void
+give_bonus(void)
 {
 	int bonus;
 
@@ -299,20 +314,4 @@ give_bonus()
 		getchar();
 	move(Y_BONUS, X_BONUS);
 	clrtoeol();
-}
-
-
-DEBUG(fmt, a1, a2, a3, a4, a5)
-	char *fmt;
-{
-	static FILE *df = NULL;
-
-	if (!df) {
-		df = fopen("DEBUG", "w");
-		if (df == NULL) {
-			BEEP();
-			BEEP();
-		}
-	}
-	fprintf(df, fmt, a1, a2, a3, a4, a5);
 }

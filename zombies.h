@@ -1,10 +1,8 @@
-/* $Header$ */
+/* $Header: /cvsroot/games/zombies/zombies.h,v 1.2 1999/06/22 13:15:03 simonb Exp $ */
 
 /*
  * zombies.h
  */
-
-#include <curses.h>
 
 #ifndef SCORE_FILE
 #define SCORE_FILE "/usr/local/share/games/zombies_score"
@@ -98,9 +96,35 @@ extern	int	StartTime, EndTime;
 
 extern	char	Field[Y_FIELDSIZE][X_FIELDSIZE];
 
-/*
- * functions
- */
+/* -- level.c -- */
+void play_level(void);
+void make_level(void);
 
-COORD	*rnd_pos();
-int	top_score();
+/* -- main.c -- */
+int main(int argc, char **argv);
+void init_field(void);
+SIGTYPE quit(int ignored);
+int another(void);
+void usage(void);
+
+/* -- misc.c -- */
+void flush_in(void);
+int query(char *prompt);
+COORD *rnd_pos(void);
+
+/* -- move.c -- */
+void get_move(void);
+int do_move(int dy, int dx);
+void move_zombies(void);
+void kill_wall(int y, int x);
+void add_to_score(int add);
+int Xsign(int n);
+
+/* -- scorec. -- */
+void score(void);
+int add_score(void);
+void show_score(void);
+void read_scores(void);
+void write_scores(void);
+int top_score(void);
+void give_bonus(void);

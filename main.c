@@ -1,11 +1,15 @@
-/* $Header$ */
+/* $Header: /cvsroot/games/zombies/main.c,v 1.2 1999/06/22 13:15:01 simonb Exp $ */
 
 /*
  * main.c
  */
 
-#include	"zombies.h"
-#include	<signal.h>
+#include <curses.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "zombies.h"
 
 /* ----- global variables ----- */
 
@@ -25,13 +29,10 @@ int	MyUid;			/* the user id of the player for scoring */
 char	Field[Y_FIELDSIZE][X_FIELDSIZE];
 
 
-
-main(argc, argv)
-int	argc;
-char	**argv;
+int
+main(int argc, char **argv)
 {
 	int	show_only;
-	SIGTYPE quit();
 
 	MyUid = getuid();
 	show_only = FALSE;
@@ -48,7 +49,7 @@ char	**argv;
 	}
 
 	if (show_only) {
-		show_score(0);
+		show_score();
 		exit(0);
 		/* NOTREACHED */
 	}
@@ -86,7 +87,8 @@ char	**argv;
 		refresh();
 		score();
 	} while (another());
-	quit();
+	quit(0);
+	exit(0);	/* keep gcc -Wall happy */
 }
 
 
@@ -95,11 +97,11 @@ char	**argv;
  *	Lay down the initial pattern whih is constant across all levels,
  *	and initialize all the global variables.
  */
-init_field()
+
+void
+init_field(void)
 {
 	int	i;
-	WINDOW	*wp;
-	int	j;
 	static int	first = TRUE;
 	static char	*desc[] = {
 				"Directions:",
@@ -174,7 +176,7 @@ init_field()
  *	Leave the program elegantly.
  */
 SIGTYPE
-quit()
+quit(int ignored)
 {
 #ifndef	_putchar
 	extern	int _putchar();
@@ -203,10 +205,10 @@ quit()
  * another:
  *	See if another game is desired
  */
-another()
-{
-	int	y;
 
+int
+another(void)
+{
 	if (query("Play again?"))
 		return TRUE;
 	else
@@ -214,7 +216,8 @@ another()
 }
 
 
-usage()
+void
+usage(void)
 {
 	fprintf(stderr, "usage: zombies [-p] [-s]\n");
 	exit(1);

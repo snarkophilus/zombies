@@ -1,8 +1,11 @@
-/* $Header$ */
+/* $Header: /cvsroot/games/zombies/move.c,v 1.2 1999/06/22 13:15:02 simonb Exp $ */
 
 /*
  * move.c
  */
+
+#include <curses.h>
+#include <unistd.h>
 
 #include "zombies.h"
 
@@ -10,11 +13,11 @@
  * get_move:
  *	Get and execute a move from the player
  */
-get_move()
+
+void
+get_move(void)
 {
-	int		c;
-	int		y, x, lastmove;
-	static COORD	newpos;
+	int	c;
 
 	for (;;) {
 		c = getchar();
@@ -68,7 +71,7 @@ get_move()
 		  case 'q':
 		  case 'Q':
 			if (query("Really ?"))
-				quit();
+				quit(0);
 			refresh();
 			break;
 		  case CTRL('L'):
@@ -87,8 +90,9 @@ get_move()
  * do_move:
  *	Execute a move
  */
-do_move(dy, dx)
-int	dy, dx;
+
+int
+do_move(int dy, int dx)
 {
 	static COORD	newpos;
 
@@ -122,6 +126,7 @@ int	dy, dx;
 		default:
 			/* NOTREACHED */;
 	}
+	return(0);	/* keep gcc -Wall happy */
 }
 
 
@@ -129,12 +134,11 @@ int	dy, dx;
  * move_zombies:
  *	Move the zombies around
  */
-move_zombies()
+
+void
+move_zombies(void)
 {
 	COORD	*zp;
-	int	y, x;
-	int	mindist, d;
-	static COORD	newpos;
 
 	for (zp = Zombies; zp < &Zombies[MAX_ZOMBIES]; zp++) {
 		if (zp->y < 0)
@@ -179,8 +183,9 @@ move_zombies()
  * kill_wall:
  *	A zombie broke a wall
  */
-kill_wall(y, x)
-int y, x;
+
+void
+kill_wall(int y, int x)
 {
 	x = (x / (WALLSIZE + X_WALLGAP)) * (WALLSIZE + X_WALLGAP) + X_WALLGAP;
 	while (Field[y][x] == WALL) {
@@ -194,8 +199,9 @@ int y, x;
  * add_to_score:
  *	Add a score to the overall point total
  */
-add_to_score(add)
-int	add;
+
+void
+add_to_score(int add)
 {
 	Score += add;
 	move(Y_SCORE, X_SCORE);
@@ -206,8 +212,9 @@ int	add;
  * Xsign:
  *	Return the almost sign of the number
  */
-Xsign(n)
-int	n;
+
+int
+Xsign(int n)
 {
 	if (n < 0)
 		return -1;

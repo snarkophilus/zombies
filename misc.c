@@ -1,12 +1,19 @@
-/* $Header$ */
+/* $Header: /cvsroot/games/zombies/misc.c,v 1.2 1999/06/22 13:15:01 simonb Exp $ */
+
+#include <curses.h>
+#include <stdlib.h>
 
 #include "zombies.h"
+
+static int rnd(int range);
 
 /*
  * flush_in:
  *	Flush all pending input.
  */
-flush_in()
+
+void
+flush_in(void)
 {
 # ifdef TIOCFLUSH
 	ioctl(fileno(stdin), TIOCFLUSH, NULL);
@@ -20,8 +27,9 @@ flush_in()
  * query:
  *	Ask a question and get a yes or no answer.  Default is "no".
  */
-query(prompt)
-char	*prompt;
+
+int
+query(char *prompt)
 {
 	int	c, retval;
 	int	y, x;
@@ -35,7 +43,7 @@ char	*prompt;
 	move(Y_PROMPT, X_PROMPT);
 	clrtoeol();
 	move(y, x);
-	return retval;
+	return(retval);
 }
 
 
@@ -45,10 +53,9 @@ char	*prompt;
  *	Pick a random, unoccupied position
  */
 COORD *
-rnd_pos()
+rnd_pos(void)
 {
 	static COORD	pos;
-	int	i = 0;
 
 	do {
 		pos.y = rnd(Y_FIELDSIZE - 1) + 1;
@@ -58,10 +65,8 @@ rnd_pos()
 	return(&pos);
 }
 
-rnd(range)
-int	range;
+static int
+rnd(int range)
 {
-	unsigned int	rand();
-
 	return(rand() % range);
 }

@@ -1,4 +1,6 @@
-/* $Header$ */
+/* $Header: /cvsroot/games/zombies/level.c,v 1.2 1999/06/22 13:15:01 simonb Exp $ */
+
+#include <curses.h>
 
 #include "zombies.h"
 
@@ -6,7 +8,8 @@
  * play_level.c
  */
 
-play_level()
+void
+play_level(void)
 {
 	flush_in();
 	wrefresh(curscr);
@@ -25,11 +28,12 @@ play_level()
  * make_level:
  *	Make the current level
  */
-make_level()
+
+void
+make_level(void)
 {
 	int	i;
 	COORD	*cp;
-	WINDOW	*wp;
 	int	x, y;
 	int	inwall = 0;
 
