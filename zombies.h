@@ -1,3 +1,5 @@
+/* $Header$ */
+
 /*
  * zombies.h
  */

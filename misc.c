@@ -1,3 +1,5 @@
+/* $Header$ */
+
 #include "zombies.h"
 
 /*

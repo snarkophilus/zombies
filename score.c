@@ -1,3 +1,5 @@
+/* $Header$ */
+
 /*
  * score.c
  */

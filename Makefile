@@ -1,3 +1,5 @@
+# $Header$
+
 PROG=	zombies
 SRCS=	level.c main.c misc.c move.c score.c
 MAN=	zombies.6
