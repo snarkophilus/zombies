@@ -1,0 +1,91 @@
+.Dd September 1995
+.Dt ZOMBIES 6
+.Os
+.Sh NAME
+.Nm zombies
+.Nd kill off the zombies
+.Sh SYNOPSIS
+.Nm zombies
+.Op Fl s
+.Op Fl p
+.Sh DESCRIPTION
+The idea of
+.Nm zombies
+is to kill as many zombies as possible.
+Fortunately for you, zombies can only move diagonally.  Once all
+the zombies on a level die you start a new level, with even more
+zombies than before.
+.Pp
+You can't directly kill the zombies - they're stupid enough to look after
+that themselves.  Zombies
+die if they run into a wall, and the wall explodes because of the impact.
+If two or more zombies crash into each other, then the
+weakers ones dies - the strongest one will still come after you.
+This keeps on going until the zombies finally get you.  There is
+no escape!
+.Pp
+Zombies are represented on the screen by a
+.Sq Ic + ,
+walls by a
+.Sq Ic # ,
+and you (the hero) by a
+.Sq Ic @ .
+The
+.Sq Ic \&.
+character is used for the background.
+.Sh
+The commands are:
+.Pp
+.Bl -tag -width flag
+.It Ic h
+move one square left
+.It Ic l
+move one square right
+.It Ic k
+move one square up
+.It Ic j
+move one square down
+.It Ic y
+move one square diagonally up and left
+.It Ic u
+move one square diagonally up and right
+.It Ic b
+move one square diagonally down and left
+.It Ic n
+move one square diagonally down and right
+.It Ic \&.
+(also
+.Ic space )
+do nothing for one turn
+.It Ic ^L
+(also
+.Ic ^R )
+redraw the screen
+.It Ic q
+quit from the game
+.Sh OPTIONS
+The options are:
+.Pp
+.Bl -tag -width flag
+.It Fl s
+Don't play a game, just show the score file and exit.
+.It Fl p
+Pause for two seconds after finishing a level.  The default behaviour
+is to wait for a keypress.
+.Sh SCORING
+You score one point for each zombie killed.  There is a bonus, equal to
+the level number multiplied by the number of walls left, added at the
+completion of each level.
+.Pp
+The score file can hold one thousand scores, but
+only ten scores are allowed for each user.
+.Sh FILES
+.Bl -tag -width "/usr/local/share/games/zombies_score" -compact
+.It Pa /usr/local/share/games/zombies_score
+The score file.
+.Sh AUTHOR
+Simon Burge (simonb@telstra.com.au).
+.Sh HISTORY
+Krem at RMIT wrote the original version on a Cyber in Pascal.  Hopefully
+this is close to the original version - the Unix(tm) version was written
+from happy memories only...
