@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/games/zombies/score.c,v 1.3 1999/06/22 13:22:45 simonb Exp $ */
+/* $Header: /cvsroot/games/zombies/score.c,v 1.4 1999/06/22 13:32:52 simonb Exp $ */
 
 /*-
  * Copyright (c) 1994, 1995, 1999
@@ -62,10 +62,10 @@ static void set_name(SCORE *s);
 void
 score(void)
 {
-	SCORE	*s;
-	char	lockfile[BUFSIZ];
 	int	done_show, i, lfd;
 	int	newscore, top, bottom, topline;
+	char	lockfile[BUFSIZ];
+	SCORE	*s;
 
 	strcpy(lockfile, SCORE_FILE);
 	strcat(lockfile, ".lock");
@@ -184,8 +184,8 @@ add_score(void)
 static void
 set_name(SCORE *s)
 {
+	char		*p, buf[MAXHOSTNAMELEN];
 	struct passwd	*pp;
-	char	*p, buf[MAXHOSTNAMELEN];
 
 	if ((pp = getpwuid(s->s_uid)) == NULL)
 		pp->pw_name = "???";
@@ -207,8 +207,8 @@ set_name(SCORE *s)
 void
 show_score(void)
 {
-	SCORE	*s;
 	int	i, inf;
+	SCORE	*s;
 
 	read_scores();
 
@@ -237,10 +237,10 @@ show_score(void)
 void
 read_scores(void)
 {
-	FILE	*sf;
 	int	i;
-	SCORE	*s;
 	char	buf[BUFSIZ];
+	FILE	*sf;
+	SCORE	*s;
 
 	/* open score file */
 	if ((sf = fopen(SCORE_FILE, "r")) == NULL)
@@ -274,8 +274,8 @@ read_scores(void)
 void
 write_scores(void)
 {
-	FILE	*sf;
 	int	i;
+	FILE	*sf;
 	SCORE	*s;
 
 	if ((sf = fopen(SCORE_FILE, "w")) == NULL)
@@ -301,9 +301,9 @@ write_scores(void)
 int
 top_score(void)
 {
-	FILE	*sf;
 	int	s;
 	char	buf[BUFSIZ];
+	FILE	*sf;
 
 	s = scores->s_score;
 	if ((sf = fopen(SCORE_FILE, "r")) != NULL) {
@@ -324,7 +324,7 @@ top_score(void)
 void
 give_bonus(void)
 {
-	int bonus;
+	int	bonus;
 
 	bonus = Level * WallsLeft;
 	mvprintw(Y_BONUS, X_BONUS, "Bonus: %d", bonus);

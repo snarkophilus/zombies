@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/games/zombies/misc.c,v 1.3 1999/06/22 13:22:44 simonb Exp $ */
+/* $Header: /cvsroot/games/zombies/misc.c,v 1.4 1999/06/22 13:32:51 simonb Exp $ */
 
 /*-
  * Copyright (c) 1994, 1995, 1999
@@ -57,8 +57,7 @@ flush_in(void)
 int
 query(char *prompt)
 {
-	int	c, retval;
-	int	y, x;
+	int	c, y, x, retval;
 
 	getyx(stdscr, y, x);
 	move(Y_PROMPT, X_PROMPT);

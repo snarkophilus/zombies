@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/games/zombies/level.c,v 1.3 1999/06/22 13:22:44 simonb Exp $ */
+/* $Header: /cvsroot/games/zombies/level.c,v 1.4 1999/06/22 13:32:50 simonb Exp $ */
 
 /*-
  * Copyright (c) 1994, 1995, 1999
@@ -30,10 +30,6 @@
 
 #include "zombies.h"
 
-/*
- * play_level.c
- */
-
 void
 play_level(void)
 {
@@ -58,16 +54,15 @@ play_level(void)
 void
 make_level(void)
 {
-	int	i;
+	int	i, x, y, inwall;
 	COORD	*cp;
-	int	x, y;
-	int	inwall = 0;
 
+	inwall = 0;
 	WallsLeft = 0;
 	for (y = 1; y < Y_FIELDSIZE; y++) {
 		for (x = 1; x < X_FIELDSIZE; x++)
 			if ((x % (X_WALLGAP + WALLSIZE) < X_WALLGAP) ||
-						(y % (Y_WALLGAP + 1))) {
+			    (y % (Y_WALLGAP + 1))) {
 				MVAddCh(y, x, BACKGR);
 				inwall = 0;
 			}
@@ -95,8 +90,8 @@ make_level(void)
 		do
 			cp = rnd_pos();
 		while (Field[cp->y][cp->x] != BACKGR &&
-				!((abs(Mypos.y - cp->y) < 3) &&
-				(abs(Mypos.x - cp->x) < 3)));
+		    !((abs(Mypos.y - cp->y) < 3) &&
+		    (abs(Mypos.x - cp->x) < 3)));
 		Zombies[i] = *cp;
 		MVAddCh(cp->y, cp->x, ZOMBIE);
 	}

@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/games/zombies/main.c,v 1.4 1999/06/22 13:32:51 simonb Exp $ */
+/* $Header: /cvsroot/games/zombies/main.c,v 1.5 1999/06/22 14:34:53 simonb Exp $ */
 
 /*-
  * Copyright (c) 1994, 1995, 1999
@@ -55,17 +55,17 @@ char	Field[Y_FIELDSIZE][X_FIELDSIZE];
 int
 main(int argc, char **argv)
 {
-	int	c, ShowOnly;
+	int	c, show_only;
 
 	MyUid = getuid();
-	ShowOnly = FALSE;
+	show_only = FALSE;
 	while ((c = getopt(argc, argv, "ps")) != EOF)
 		switch (c) {
 		  case 'p':
 			Pause = TRUE;
 			break;
 		  case 's':
-			ShowOnly = TRUE;
+			show_only = TRUE;
 			break;
 		  case '?':
 			usage();
@@ -75,7 +75,7 @@ main(int argc, char **argv)
 		usage();
 		/* NOTREACHED */
 
-	if (ShowOnly) {
+	if (show_only) {
 		show_score();
 		exit(0);
 		/* NOTREACHED */
