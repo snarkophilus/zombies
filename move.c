@@ -1,5 +1,3 @@
-/* $Header: /cvsroot/games/zombies/move.c,v 1.3 1999/06/22 13:22:45 simonb Exp $ */
-
 /*-
  * Copyright (c) 1994, 1995, 1999
  *      Simon Burge.  All rights reserved.

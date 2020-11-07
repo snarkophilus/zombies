@@ -1,5 +1,3 @@
-/* $Header: /cvsroot/games/zombies/misc.c,v 1.4 1999/06/22 13:32:51 simonb Exp $ */
-
 /*-
  * Copyright (c) 1994, 1995, 1999
  *      Simon Burge.  All rights reserved.
